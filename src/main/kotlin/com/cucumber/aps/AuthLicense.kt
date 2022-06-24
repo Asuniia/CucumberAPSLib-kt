@@ -6,9 +6,16 @@ class AuthLicense(val license: String) {
     private val fqdn = "127.0.0.1:8000"
     private val endpoint = "/api/v1/verify"
 
+    private var mode: AuthMode = AuthMode.CSAP
+
     private var timer: Int = Int.MAX_VALUE
     private var onSuccessCallback = {  }
     private var onFailureCallback = {  }
+
+    fun useMode(mode: AuthMode): AuthLicense {
+        this.mode = mode
+        return this
+    }
 
     fun onSuccess(callback: () -> Unit): AuthLicense {
         this.onSuccessCallback = callback
@@ -25,8 +32,8 @@ class AuthLicense(val license: String) {
         return this
     }
 
-    fun verify(mode : AuthMode) {
-        val auth: AbstractAuth = when (mode) {
+    fun verify() {
+        val auth: AbstractAuth = when (this.mode) {
             AuthMode.CSAP -> CSAPAuth()
             AuthMode.Classic -> ClassicAuth()
         }

@@ -22,10 +22,11 @@ class Main : JavaPlugin() {
 
     override fun onEnable() {
         AuthLicense("7bf2f6ca-1632-495b-8d86-5458f316b6bd")
+            .mode(AuthMode::Classic)
             .onSuccess { logger.info("License of $name could be correctly verified") }
             .onFailure { System.exit() }
             .each(15 * 60 * 1000)
-            .verify(AuthMode::Classic)
+            .verify()
     }
 }
 ```
