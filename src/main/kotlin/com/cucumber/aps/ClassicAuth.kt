@@ -1,27 +1,36 @@
 package com.cucumber.aps
 
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-class ClassicAuth : AbstractAuth() {
-    val endpoint = "/api/v1/auth/verify"
+class ClassicAuth(
+    license: String,
+    protocol: String,
+    fqdn: String,
+    timer: Int,
+    onSuccessCallback: () -> Unit,
+    onFailureCallback: () -> Unit
+) : AbstractAuth(
+    license,
+    protocol,
+    fqdn,
+    timer,
+    onSuccessCallback,
+    onFailureCallback
+) {
+    val verifyEndpoint = "/api/v1/auth/verify"
 
-    override fun verify(
-        license: String,
-        protocol: String,
-        fqdn: String,
-        timer: Int,
-        onSuccessCallback: () -> Unit,
-        onFailureCallback: () -> Unit
-    ) {
+    override fun verify() {
+        val response = init()
 
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                val url = URL(protocol + fqdn + endpoint)
+                val url = URL(protocol + fqdn + verifyEndpoint + "?token=${response.token}")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
-                connection.addRequestProperty("Key", license)
                 val responseCode = connection.responseCode
 
                 if (responseCode != HttpURLConnection.HTTP_OK) onFailureCallback()
@@ -30,3 +39,4 @@ class ClassicAuth : AbstractAuth() {
         }, 0, timer.toLong())
     }
 }
+

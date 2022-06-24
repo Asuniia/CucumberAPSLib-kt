@@ -2,14 +2,14 @@ package com.cucumber.aps
 
 class AuthLicense(val license: String) {
 
-    private val protocol = "http://"
+    private val protocol = "https://"
     private val fqdn = "127.0.0.1:8000"
 
     private var mode: AuthMode = AuthMode.CSAP
 
     private var timer: Int = Int.MAX_VALUE
-    private var onSuccessCallback = {  }
-    private var onFailureCallback = {  }
+    private var onSuccessCallback = { }
+    private var onFailureCallback = { }
 
     fun useMode(mode: AuthMode): AuthLicense {
         this.mode = mode
@@ -26,7 +26,7 @@ class AuthLicense(val license: String) {
         return this
     }
 
-    fun each(timer : Int): AuthLicense {
+    fun each(timer: Int): AuthLicense {
         this.timer = timer
         return this
     }
