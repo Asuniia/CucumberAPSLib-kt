@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30-RC'
+}
+
+group 'com.cucumber.aps'
+version '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+archivesBaseName = 'cucumber-aps-lib'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: "1.4.30-RC"
+}
+
+shadowJar {
+    destinationDirectory = "./build/" as File
+    archiveFileName = "${archiveBaseName.get()}-${archiveVersion.get()}.jar"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
