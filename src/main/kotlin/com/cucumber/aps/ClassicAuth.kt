@@ -5,15 +5,17 @@ import java.net.URL
 import java.util.*
 
 class ClassicAuth : AbstractAuth {
+    val endpoint = "/api/v1/auth/verify"
+
     override fun verify(
         license: String,
         protocol: String,
         fqdn: String,
-        endpoint: String,
         timer: Int,
         onSuccessCallback: () -> Unit,
         onFailureCallback: () -> Unit
     ) {
+
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 val url = URL(protocol + fqdn + endpoint)

@@ -4,7 +4,6 @@ class AuthLicense(val license: String) {
 
     private val protocol = "http://"
     private val fqdn = "127.0.0.1:8000"
-    private val endpoint = "/api/v1/verify"
 
     private var mode: AuthMode = AuthMode.CSAP
 
@@ -42,7 +41,6 @@ class AuthLicense(val license: String) {
             this.license,
             this.protocol,
             this.fqdn,
-            this.endpoint,
             this.timer,
             this.onSuccessCallback,
             this.onFailureCallback,
