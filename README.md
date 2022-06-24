@@ -1,6 +1,6 @@
-# Cerium License Lib
+# CucumberAPSLib-KT
 
-Cerium/license-lib contient une librairie conçus pour la JVM. Elle permet d'utiliser facilement le systeme de license de Cerium.
+Asuniia/CucumberAPSLib-kt contient une librairie conçus pour la JVM. Elle permet d'utiliser facilement le systeme de license de CucumberAPS.
 
 ## Requis
 
@@ -11,11 +11,12 @@ Cerium/license-lib contient une librairie conçus pour la JVM. Elle permet d'uti
 Voici un exemple d'integration avec Spigot. Dans cette exemple la clé de license sera reverifier toutes les 15 minutes. En cas d'échec le programme plantera, sinon elle loggera un message.
 
 ```java
-package xyz.cerium.license_demo;
+package com.exemple.license_demo;
 
 import java.lang.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.cerium.license.AuthLicense;
+import com.cucumber.aps.AuthLicense;
+import com.cucumber.aps.AuthMode;
 
 class Main : JavaPlugin() {
 
@@ -24,7 +25,7 @@ class Main : JavaPlugin() {
             .onSuccess { logger.info("License of $name could be correctly verified") }
             .onFailure { System.exit() }
             .each(15 * 60 * 1000)
-            .verify()
+            .verify(AuthMode::Classic)
     }
 }
 ```
