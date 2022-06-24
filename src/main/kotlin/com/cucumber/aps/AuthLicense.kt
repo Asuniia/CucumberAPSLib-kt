@@ -32,18 +32,20 @@ class AuthLicense(val license: String) {
     }
 
     fun verify() {
-        val auth: AbstractAuth = when (this.mode) {
-            AuthMode.CSAP -> CSAPAuth()
-            AuthMode.Classic -> ClassicAuth()
+        val constructor = when (this.mode) {
+            AuthMode.CSAP -> ::CSAPAuth
+            AuthMode.Classic -> ::ClassicAuth
         }
 
-        auth.verify(
+        val auth = constructor.call(
             this.license,
             this.protocol,
             this.fqdn,
             this.timer,
             this.onSuccessCallback,
-            this.onFailureCallback,
+            this.onFailureCallback
         )
+
+        auth.verify()
     }
 }
