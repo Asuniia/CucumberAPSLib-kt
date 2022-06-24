@@ -1,6 +1,6 @@
 package com.cucumber.aps
 
-class CSAPAuth : AbstractAuth {
+class CSAPAuth : AbstractAuth() {
     override fun verify(
         license: String,
         protocol: String,

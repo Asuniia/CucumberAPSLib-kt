@@ -1,7 +1,9 @@
 package com.cucumber.aps
 
-interface AbstractAuth {
-    fun verify(
+abstract class AbstractAuth {
+    val initEndpoint : String = "/api/v1/auth/init"
+
+    abstract fun verify(
         license: String,
         protocol: String,
         fqdn: String,

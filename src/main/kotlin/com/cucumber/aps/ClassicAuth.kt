@@ -4,7 +4,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-class ClassicAuth : AbstractAuth {
+class ClassicAuth : AbstractAuth() {
     val endpoint = "/api/v1/auth/verify"
 
     override fun verify(
