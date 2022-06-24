@@ -2,7 +2,8 @@ plugins {
     id 'java'
     id "com.github.johnrengelman.shadow" version "6.1.0"
 
-    id 'org.jetbrains.kotlin.jvm' version '1.4.30-RC'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.21'
 }
 
 group 'com.cucumber.aps'
@@ -28,7 +29,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    implementation group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: "1.4.30-RC"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 }
 
 shadowJar {
