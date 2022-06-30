@@ -38,5 +38,9 @@ class ClassicAuth(
             }
         }, 0, timer.toLong())
     }
+
+    override fun verify(token: String) {
+        verify()
+    }
 }
 
