@@ -38,11 +38,10 @@ class CSAPAuth(
         val responseCode = connection.responseCode
 
         if (responseCode != HttpURLConnection.HTTP_OK) {
-            println(Json.decodeFromStream<OK>(connection.content as InputStream))
             throw Exception("Can't access to CSAP API")
         }
 
-        return Json.decodeFromStream<OK>(connection.content as InputStream).token
+        return Json.decodeFromStream<String>(connection.content as InputStream).toString()
     }
 
     override fun verify() {
@@ -50,7 +49,7 @@ class CSAPAuth(
     }
 
     override fun verify(token: String) {
-        val response = init();
+        val response = init()
 
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {

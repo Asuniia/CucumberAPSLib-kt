@@ -38,11 +38,10 @@ abstract class AbstractAuth(
         if (responseCode != HttpURLConnection.HTTP_OK) {
             onFailureCallback()
 
-            throw IllegalAccessError()
+            return OK("")
         }
 
         return Json.decodeFromStream(connection.content as InputStream)
-
     }
 
     abstract fun verify()
