@@ -30,7 +30,7 @@ class ClassicAuth(
         val executor = Executors.newScheduledThreadPool(1)
 
         executor.scheduleAtFixedRate({
-            val url = URL(protocol + fqdn + verifyEndpoint + "?token=${response.token}")
+            val url = URL(protocol + fqdn + verifyEndpoint + "?token=${response!!.token}")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             val responseCode = connection.responseCode

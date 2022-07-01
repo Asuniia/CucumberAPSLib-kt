@@ -28,20 +28,17 @@ abstract class AbstractAuth(
     )
 
     @OptIn(ExperimentalSerializationApi::class)
-    fun init(): OK {
+    fun init(): OK? {
         val url = URL(protocol + fqdn + initEndpoint)
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
         connection.addRequestProperty("Key", license)
         val responseCode = connection.responseCode
 
-        if (responseCode != HttpURLConnection.HTTP_OK) {
+        return if (responseCode != HttpURLConnection.HTTP_OK) {
             onFailureCallback()
-
-            return OK("")
-        }
-
-        return Json.decodeFromStream(connection.content as InputStream)
+            null
+        } else Json.decodeFromStream(connection.content as InputStream)
     }
 
     abstract fun verify()

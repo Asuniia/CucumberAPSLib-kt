@@ -53,7 +53,7 @@ class CSAPAuth(
 
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                val url = URL(getCSAPUrl(response.token))
+                val url = URL(getCSAPUrl(response!!.token))
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 connection.addRequestProperty("Key", token)
