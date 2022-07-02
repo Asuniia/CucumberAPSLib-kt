@@ -37,7 +37,7 @@ class AuthLicense(val license: String) {
             AuthMode.Classic -> ::ClassicAuth
         }
 
-        val auth = constructor.call(
+        val auth = constructor(
             this.license,
             this.protocol,
             this.fqdn,

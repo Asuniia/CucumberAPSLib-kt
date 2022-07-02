@@ -1,9 +1,15 @@
 package com.cucumber.aps
 
+import com.google.gson.JsonParser
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+
 
 abstract class AbstractAuth(
     val license: String,
@@ -21,21 +27,21 @@ abstract class AbstractAuth(
         val token: String
     )
 
-    fun init(): OK {
+    @OptIn(ExperimentalSerializationApi::class)
+    fun init(): OK? {
         val url = URL(protocol + fqdn + initEndpoint)
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
         connection.addRequestProperty("Key", license)
         val responseCode = connection.responseCode
 
-        if (responseCode != HttpURLConnection.HTTP_OK) {
+        return if (responseCode != HttpURLConnection.HTTP_OK) {
             onFailureCallback()
-
-            throw IllegalAccessError()
-        }
-
-        return Json.decodeFromString(connection.responseMessage)
+            null
+        } else Json.decodeFromStream(connection.content as InputStream)
     }
 
     abstract fun verify()
+
+    abstract fun verify(token: String)
 }

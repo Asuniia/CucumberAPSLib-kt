@@ -2,7 +2,9 @@ package com.cucumber.aps
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import java.awt.Desktop
+import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
@@ -36,17 +38,22 @@ class CSAPAuth(
         val responseCode = connection.responseCode
 
         if (responseCode != HttpURLConnection.HTTP_OK) {
-            Thread.sleep(100)
-            return getCSAPToken(token)
+            throw Exception("Can't access to CSAP API")
         }
 
-        return Json.decodeFromString<OK>(connection.responseMessage).token
+        return Json.decodeFromStream<String>(connection.content as InputStream).toString()
     }
 
-    private fun verify(token: String) {
+    override fun verify() {
+        verify(license)
+    }
+
+    override fun verify(token: String) {
+        val response = init()
+
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                val url = URL(protocol + fqdn + "/api/v1/auth/csap/endpoint")
+                val url = URL(getCSAPUrl(response!!.token))
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 connection.addRequestProperty("Key", token)
@@ -54,7 +61,6 @@ class CSAPAuth(
 
                 if (responseCode != HttpURLConnection.HTTP_OK) onFailureCallback()
                 else onSuccessCallback()
-                return Json.decodeFromString<OK>(connection.responseMessage)
             }
         }, 0, timer.toLong())
     }

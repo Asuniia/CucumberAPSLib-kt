@@ -1,10 +1,11 @@
 package com.cucumber.aps
 
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+
 
 class ClassicAuth(
     license: String,
@@ -26,17 +27,21 @@ class ClassicAuth(
     override fun verify() {
         val response = init()
 
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                val url = URL(protocol + fqdn + verifyEndpoint + "?token=${response.token}")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "GET"
-                val responseCode = connection.responseCode
+        val executor = Executors.newScheduledThreadPool(1)
 
-                if (responseCode != HttpURLConnection.HTTP_OK) onFailureCallback()
-                else onSuccessCallback()
-            }
-        }, 0, timer.toLong())
+        executor.scheduleAtFixedRate({
+            val url = URL(protocol + fqdn + verifyEndpoint + "?token=${response!!.token}")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+            val responseCode = connection.responseCode
+
+            if (responseCode != HttpURLConnection.HTTP_OK) onFailureCallback()
+            else onSuccessCallback()
+        },0,timer.toLong(), TimeUnit.MILLISECONDS)
+    }
+
+    override fun verify(token: String) {
+        verify()
     }
 }
 
