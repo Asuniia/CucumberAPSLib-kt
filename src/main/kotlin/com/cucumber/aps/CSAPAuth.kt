@@ -27,15 +27,15 @@ class CSAPAuth(
 ) {
 
     companion object {
-        @JvmField // TODO: Write javadoc
+        // TODO: Write javadoc
         val handleCSAPConfirmScreen: (CSAPScreenLink: String, CSAPCallbackLink: String) -> String =
             ::defaultHandleCSAPConfirmScreen
 
-        @JvmField // TODO: Write javadoc
+        // TODO: Write javadoc
         val handleCSAPStoreToken: (token: String) -> Unit =
             ::defaultHandleCSAPStoreToken
 
-        @JvmField // TODO: Write javadoc
+        // TODO: Write javadoc
         val handleCSAPRetrieveToken: () -> String? =
             ::defaultHandleCSAPRetrieveToken
 
@@ -87,6 +87,8 @@ class CSAPAuth(
                         protocol + fqdn + "/api/v1/auth/cspa/login?token=${response.token}",
                         protocol + fqdn + "/api/v1/auth/cspa/callback?token=${response.token}",
                     )
+
+                    handleCSAPStoreToken(tokenCSAP)
                 }
 
                 val url = URL(protocol + fqdn + "/api/v1/auth/csap/endpoint?token=${tokenCSAP}")
