@@ -1,12 +1,10 @@
 package com.cucumber.aps
 
-import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
-import java.awt.Desktop
 import java.io.InputStream
 import java.net.HttpURLConnection
-import java.net.URI
 import java.net.URL
 import java.util.*
 
@@ -31,6 +29,7 @@ class CSAPAuth(
         return protocol + fqdn + "/api/v1/auth/csap/login?token=${token}"
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     private fun getCSAPToken(token: String): String {
         val url = URL(protocol + fqdn + "/api/v1/auth/csap/callback?token=${token}")
         val connection = url.openConnection() as HttpURLConnection
