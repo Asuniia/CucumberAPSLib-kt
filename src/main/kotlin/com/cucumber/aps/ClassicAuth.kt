@@ -24,10 +24,10 @@ class ClassicAuth(
     val verifyEndpoint = "/api/v1/auth/verify"
 
     override fun verify() {
-        val response = init()
-
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
+                val response = init()
+
                 val url = URL(protocol + fqdn + verifyEndpoint + "?token=${response.token}")
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
