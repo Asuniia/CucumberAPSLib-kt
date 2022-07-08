@@ -25,7 +25,7 @@ class CSAPAuth(
 
 ) {
 
-    private fun getCSAPUrl(token: String): String {
+    public fun getCSAPUrl(token: String): String {
         return protocol + fqdn + "/api/v1/auth/csap/login?token=${token}"
     }
 

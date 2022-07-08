@@ -1,11 +1,11 @@
 package com.cucumber.aps
 
-class AuthLicense(val license: String) {
+class AuthLicense(private val license: String, val csap_token: String?) {
 
     private val protocol = "https://"
     private val fqdn = "aktech.fr"
 
-    private var mode: AuthMode = AuthMode.CSAP
+    private var mode: AuthMode = AuthMode.Classic
 
     private var timer: Int = Int.MAX_VALUE
     private var onSuccessCallback = { }
