@@ -1,6 +1,6 @@
 package com.cucumber.aps
 
-class AuthLicense(val license: String) {
+class AuthLicense(private val license: String) {
 
     private val protocol = "https://"
     private val fqdn = "127.0.0.1:8000"
