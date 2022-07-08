@@ -2,8 +2,12 @@ package com.cucumber.aps
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.stream.Collectors
+
 
 abstract class AbstractAuth(
     val license: String,
@@ -34,7 +38,10 @@ abstract class AbstractAuth(
             throw IllegalAccessError()
         }
 
-        return Json.decodeFromString(connection.responseMessage)
+        val result = BufferedReader(InputStreamReader(connection.inputStream))
+            .lines().collect(Collectors.joining("\n"))
+
+        return Json.decodeFromString(result)
     }
 
     abstract fun verify()
