@@ -25,6 +25,11 @@ abstract class AbstractAuth(
         val token: String
     )
 
+    data class Error(
+        val message: String,
+        val code: ErrorCode,
+    )
+
     fun init(): OK {
         val url = URL(protocol + fqdn + initEndpoint)
         val connection = url.openConnection() as HttpURLConnection
